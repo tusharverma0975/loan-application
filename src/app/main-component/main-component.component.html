@@ -1,0 +1,121 @@
+<!-- loan-calculator.component.html -->
+<div class="loan-calculator">
+  <div class="header">
+    <div class="back-button">
+      <i class="fa fa-angle-left"></i>
+    </div>
+    <div class="title">Loan Calculator</div>
+    <div class="menu-button">
+      <i class="fa fa-ellipsis-v"></i>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card max-funding-card">
+      <div class="card-label">Maximum funding</div>
+      <div class="max-funding-amount">{{ formatCurrency(maxFunding) }}</div>
+      <div class="vehicle-info">
+        <div class="vehicle-details">
+          <div class="vehicle-model">{{ vehicleModel }}</div>
+          <div class="vehicle-year">{{ vehicleYear }}</div>
+        </div>
+        <div class="vehicle-icon">
+          <i class="fa fa-motorcycle"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="card slider-card">
+      <div class="card-label">Loan Amount</div>
+      <div class="amount-value">{{ formatCurrency(loanAmount) }}</div>
+      <div class="slider-container">
+        <input
+          type="range"
+          [min]="minLoanAmount"
+          [max]="maxLoanAmount"
+          step="10000"
+          [(ngModel)]="loanAmount"
+          (input)="calculateMonthlyRepayment()"
+          class="slider"
+        />
+        <div class="slider-track">
+          <div
+            class="slider-fill"
+            [style.width]="
+              ((loanAmount - minLoanAmount) / (maxLoanAmount - minLoanAmount)) *
+                100 +
+              '%'
+            "
+          ></div>
+          <div
+            class="slider-thumb"
+            [style.left]="
+              ((loanAmount - minLoanAmount) / (maxLoanAmount - minLoanAmount)) *
+                100 +
+              '%'
+            "
+          ></div>
+        </div>
+      </div>
+      <div class="slider-range">
+        <span>{{ formatCurrency(minLoanAmount) }}</span>
+        <span>{{ formatCurrency(maxLoanAmount) }}</span>
+      </div>
+    </div>
+
+    <!-- Loan Period Card -->
+    <div class="card slider-card">
+      <div class="card-label">Loan Period</div>
+      <div class="amount-value">{{ loanPeriod }} Months</div>
+      <div class="slider-container">
+        <input
+          type="range"
+          [min]="minLoanPeriod"
+          [max]="maxLoanPeriod"
+          step="1"
+          [(ngModel)]="loanPeriod"
+          (input)="calculateMonthlyRepayment()"
+          class="slider"
+        />
+        <div class="slider-track">
+          <div
+            class="slider-fill"
+            [style.width]="
+              ((loanPeriod - minLoanPeriod) / (maxLoanPeriod - minLoanPeriod)) *
+                100 +
+              '%'
+            "
+          ></div>
+          <div
+            class="slider-thumb"
+            [style.left]="
+              ((loanPeriod - minLoanPeriod) / (maxLoanPeriod - minLoanPeriod)) *
+                100 +
+              '%'
+            "
+          ></div>
+        </div>
+      </div>
+      <div class="slider-range">
+        <span>{{ minLoanPeriod }} Months</span>
+        <span>{{ maxLoanPeriod }} Months</span>
+      </div>
+    </div>
+
+    <!-- Estimated Monthly Repayment -->
+    <div class="estimated-repayment">
+      <div class="repayment-label">Estimated monthly repayment</div>
+      <div class="repayment-amount">
+        {{ formatCurrency(estimatedMonthlyRepayment) }}
+      </div>
+      <div class="repayment-note">
+        Installment rates may change according to the results of the
+        verification of the physical condition of the vehicle at the branch
+        office.
+      </div>
+    </div>
+
+    <!-- Apply Button -->
+    <button class="apply-button" (click)="applyLoan()">APPLY LOAN</button>
+  </div>
+</div>
